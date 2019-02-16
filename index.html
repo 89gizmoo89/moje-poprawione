@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html lang="pl">
+    <head>
+        <title>Zadanie cz. B</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+p{  
+    height: 20px;
+    background: lightblue;
+    font-display: initial;
+    overflow: hidden;   
+}
+.zmiana{
+    height: 20px;
+    background: lightgreen;
+    overflow: hidden;
+    } 
+.wlacznik {
+    width: 100px;
+    height: 30px;
+    background: grey;
+    border: 1 px solid black;
+    color: black;
+}
+        </style>
+        
+    </head>
+    <body>
+        <div id="licznikfilmow"></div>
+        <div id="listafilmow" class="listafilmow">
+        </div></br>
+        <div id="tagi"></div></br></br>
+        <div id="wlacznik" class="wlacznik"><b>Włącznik</b></div></br></br>
+        <div class="form-row"> <h2>Dodawanie pozycji do listy:</h2> </br></br>
+            <b>Tytuł filmu: </b><input type="text" name="name" id="tytul"></br>
+            <b>Rok premiery: </b><input type="text" name="text" id="rok"></br>
+            <input type=button id="dodajdolisty" value="Dodaj do listy filmów">            
+        </div>
+<script>
+    const listOfMovies = [
+  'Władca much (1990)',
+  'Władca Pierścieni (1978)',
+  'Milczenie owiec (1991)',
+  'Moja dziewczyna (1991)',
+  'Dziewczyna z tatuażem (2011)',
+  'Jestem Bogiem (2011)',
+  'Jestem legendą (2007)',
+  'Matrix (1999)',
+  'Zielona mila (1999)',
+  '8 Mila (2002)',
+  'Uciekająca panna młoda (1999)',
+  'Gnijąca panna młoda (2005)',
+  'Dzień świra (2002)',
+  'Dzień Niepodległości (1996)',
+  'Dzień świstaka (1993)',
+  'Lista Schindlera (1993)',
+  'Czarna lista Hollywood (1991)',
+  'Lista klientów (2012)',
+  'Teraz albo nigdy (2018)',
+  'Niech będzie teraz (2012)',
+  'Zabójcze maszyny (2018)',
+  'Zabójcza broń (1987)',
+  'Znaki (2002)',
+  'Znaki na drodze (1969)',
+  'Wodne znaki (2013)',
+  'Znaki dymne (1998)',
+  'Jeden dzień (2011)',
+  'Dzień próby (2001)',
+  'Dzień z życia blondynki (2014)',
+  'Panna Nikt (1996)',
+  'Panna Meadows (2014)',
+  'Panna Nikt (2010)',
+  'Panna Julia (1951)'
+]
+
+//Zadanie 1
+function zaladujliste(filtr) {
+var wyswietlelement = document.getElementById("listafilmow")
+wyswietlelement.innerHTML = "";
+var licznik=1;
+for(let i=0; i<listOfMovies.length;i++){
+    if (!listOfMovies[i].toUpperCase().includes(filtr))
+       continue;
+  if (licznik%2==0){
+    var element = document.createElement("p")
+    var value = document.createTextNode(listOfMovies[i])
+    element.appendChild(value)
+    element.setAttribute("class","zmiana")
+    wyswietlelement.appendChild(element)
+    licznik++
+  }
+  else{
+    var element = document.createElement("p")
+    var value = document.createTextNode(listOfMovies[i])
+    element.appendChild(value)
+    wyswietlelement.appendChild(element)
+    licznik++     
+  }
+}
+}
+zaladujliste("");
+//Zadanie 2
+function licznikfilmow(){
+document.getElementById("licznikfilmow").innerHTML="Na liście są aktualnie: "+document.getElementsByTagName("p").length+ " filmy."+"</br></br></br>"
+}
+licznikfilmow();
+//Zadanie 3
+const tagi=[]
+for (i=0; i<listOfMovies.length;i++){
+    var text = listOfMovies[i]
+    const slowa = text.split(" ")
+    for (j=0; j<slowa.length;j++){
+      var e=slowa[j]
+      var d=e.toUpperCase()
+      tagi.push(d)
+    }
+}
+var tabsort = tagi.sort()
+
+var dodajtab = document.createElement("table")
+var value= document.createTextNode("Lista tagów: ")
+dodajtab.appendChild(value)
+var dorzuc = document.getElementById("tagi")
+dorzuc.appendChild(dodajtab)
+var dodajwiersz = document.createElement("tr")
+var value = document.createTextNode("")
+dodajwiersz.appendChild(value)
+var dorzuc = document.getElementById("tagi")
+dorzuc.appendChild(dodajwiersz)
+
+for(i=0; i<tabsort.length;i++){
+  var licznik=0
+  var sprawdzaneslowo = tabsort[i]
+
+  for(j=0;j<tabsort.length;j++){
+    if(sprawdzaneslowo==tabsort[j]){
+      licznik++
+    }
+  }
+  if (tabsort[i]!=tabsort[i+1]){
+    var dodajkolumne = document.createElement("tr")
+    var taglink=document.createElement("a")
+    dodajkolumne.appendChild(taglink)
+    taglink.addEventListener('click', function() {
+      zaladujliste(this.innerText);
+      licznikfilmow();
+    });
+    var value = document.createTextNode(sprawdzaneslowo)
+    taglink.appendChild(value)
+    var dorzuc = document.getElementById("tagi")
+    dorzuc.appendChild(dodajkolumne)
+
+    if(licznik==1){
+      dodajkolumne.style.fontSize="8px";
+    }
+    else if(licznik>=2 && licznik<5){
+      dodajkolumne.style.fontSize="12px";
+    }
+    else if (licznik>5){
+      dodajkolumne.style.fontSize="20px";
+    }
+    licznikfilmow();
+  }
+}
+
+//Zadanie 5
+const btn = document.getElementById("wlacznik");
+var on = false;
+btn.addEventListener("click", function() {
+  var zmianaelementu = document.getElementsByTagName("p")
+  if(on==false){  
+    this.style.backgroundColor = "lightpink";
+    this.style.color="black";
+    on=true
+
+    for(i=0;i<zmianaelementu.length;i++){
+      zmianaelementu[i].style.background = "lightpink";
+      zmianaelementu[i].style.color = "black";
+    }
+  }
+  else if(on==true){
+    this.style.backgroundColor= "grey";
+    this.style.color="black";
+    on=false
+
+    for(i=0;i<zmianaelementu.length;i++){
+      if(i%2==0){
+        zmianaelementu[i].style.background = "lightblue";
+      }
+      else{
+        zmianaelementu[i].style.background = "lightgreen";
+      } 
+   }
+  } 
+});
+
+//Zadanie 6
+let dodajdolisty=document.getElementById("dodajdolisty")
+dodajdolisty.onclick=function (){    
+  var tytul=document.getElementById("tytul");
+  var rok=document.getElementById("rok");
+  if (!tytul.value){
+    alert("Nie wprowadzono wszystkich danych")
+  }
+  else if(!rok.value){
+    alert("Nie wprowadzono wszystkich danych")
+  }
+  else if(isNaN(rok.value)){
+    alert("Wprowadzony rok nie jest liczbą")
+  }
+  else{
+  listOfMovies.push(document.getElementById("tytul").value+" ("+document.getElementById("rok").value+")");
+  function wyczyść(){
+    document.getElementById("listafilmow").innerHTML = "";    
+}
+  wyczyść();
+  zaladujliste();
+  listafilmow();
+  alert("Wprowadzony film zostanie dopisany do listy filmów")  
+}
+}
+    </script>
+    </body>
+</html>
